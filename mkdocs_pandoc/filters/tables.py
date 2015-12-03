@@ -16,37 +16,22 @@
 #
 # mdtableconv.py - converts pipe tables to Pandoc's grid tables
 
-from __future__ import print_function
-import argparse
-import codecs
 import markdown.extensions.tables as tbl
 import markdown.blockparser
-import math
-import sys
 import re
 import string
 import textwrap
 
-opts = argparse.ArgumentParser(description="mdtableconv.py - converts pipe delimited tables to Pandoc's grid tables")
-opts.add_argument('-i', '--in-place', default=False, action='store_true',
-        help="Edit files in place (default: False)")
-opts.add_argument('-e', '--encoding', default='utf-8',
-        help="Set encoding for input files (default: utf-8)")
-opts.add_argument('-w', '--width', default=100, help="Width of generated grid table in characters (default: 100)")
-opts.add_argument('FILE', nargs='*', default=[])
-args = None
-
-class GridTableProcessor(tbl.TableProcessor):
+class TableFilter(tbl.TableProcessor):
     def __init__(self, width=100, encoding='utf-8'):
-        self.encoding = encoding
-        self.blocks = []
         self.width = width
         self.width_default = 20   # Default column width for rogue rows with more cells than the first row.
 
 
-    def add_blocks(self, fh):
-        """Reads markdown from filehandle fh and parses it into blocks. Returns a list of blocks"""
+    def blocks(self, lines):
+        """Groups lines into markdown blocks"""
         state = markdown.blockparser.State()
+        blocks = []
 
         # We use three states: start, ``` and '\n'
         state.set('start')
@@ -54,19 +39,22 @@ class GridTableProcessor(tbl.TableProcessor):
         # index of current block
         currblock = 0
 
-        for line in fh.readlines():
+        for line in lines:
+            line += '\n'
             if state.isstate('start'):
                 if line[:3] == '```':
                     state.set('```')
                 else:
                     state.set('\n')
-                self.blocks.append('')
-                currblock = len(self.blocks) - 1
+                blocks.append('')
+                currblock = len(blocks) - 1
             else:
                 marker = line[:3]  # Will capture either '\n' or '```'
                 if state.isstate(marker):
                     state.reset()
-            self.blocks[currblock] += line
+            blocks[currblock] += line
+
+        return blocks
 
 
     def convert_table(self, block):
@@ -82,7 +70,7 @@ class GridTableProcessor(tbl.TableProcessor):
 
         has_border = False  # Will be set to True if this is a bordered table
 
-        width_unit = 0.0 # This number is used to divide up self.width according 
+        width_unit = 0.0 # This number is used to divide up self.width according
                          # to the following formula:
                          #
                          # self.width = width_unit * maxwidth
@@ -176,14 +164,14 @@ class GridTableProcessor(tbl.TableProcessor):
         return lines
 
 
-    def process_blocks(self):
-        """Passes all blocks through convert_table() and returns a list of lines."""
-        lines = []
+    def run(self, lines):
+        """Filter method: Passes all blocks through convert_table() and returns a list of lines."""
+        ret = []
 
-        for block in self.blocks:
-            lines.extend(self.convert_table(block))
+        for block in self.blocks(lines):
+            ret.extend(self.convert_table(block))
 
-        return lines
+        return ret
 
 
     def ruler_line(self, widths, linetype='-'):
@@ -239,44 +227,3 @@ class GridTableProcessor(tbl.TableProcessor):
             lines.append(line)
 
         return lines
-
-
-if __name__ == '__main__':
-    args = opts.parse_args()
-
-    out = sys.stdout
-
-    if args.in_place and len(args.FILE) == 0:
-        print('Cannot edit STDIN in place. Specify at least one file argument.', file=sys.stderr)
-        exit(1)
-
-
-    if len(args.FILE) == 0:
-        tp = GridTableProcessor(args.width)
-        tp.add_blocks(sys.stdin)
-        for line in tp.process_blocks():
-            print(line)
-    else:
-      for f in args.FILE:
-        try:
-          fh = codecs.open(f, 'r', encoding=args.encoding)
-        except IOError as e:
-          print("Couldn't open %s for reading: %s" % (f, e.strerror), file=sys.stderr)
-          continue
-
-        tp = GridTableProcessor(args.width)
-        tp.add_blocks(fh)
-        fh.close()
-
-        if args.in_place:
-          try:
-            out = codecs.open(f, 'w', encoding=args.encoding)
-          except Exception as e:
-            print("Couldn't open %s for writing, skipping: %s" % (f, e.strerror), file=sys.stderr)
-            continue
-        
-        for line in tp.process_blocks():
-          print(line, file=out)
-
-        if args.in_place:
-          out.close()

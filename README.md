@@ -1,64 +1,34 @@
 # DESCRIPTION
 
-This is a mixed bag of preprocessors for [mkdocs](http://www.mkdocs.org) style
-markdown that will convert it into one markdown file suitable for consumption
-by [pandoc(1)](http://www.pandoc.org). Their original purpose is providing a
-path for generating PDF and EPUB output in a sane manner, i.e. without having
-to resort to a HTML to PDF conversion step. It may be useful for other purposes
-as well, but this is the one I'm reasonably sure it works for.
+This module contains a set of filters for converting
+[mkdocs](http://www.mkdocs.org) style markdown documentation into a single
+[pandoc(1)](http://www.pandoc.org) flavoured markdown document. This is useful
+for
 
-# DEPENDENCIES
+* Generating PDF or EPUB from your mkdocs documentation
+* Generating single-page HTML from your mkdocs documentation
+* Converting your mkdocs documentation to other formats, such as asciidoc.
 
-In order to actually convert `mkdocs` documention to PDF you will need
-`mkdocs`, `pandoc` and the toolchain pandoc uses to generate PDF. On an Ubuntu
-14.04 LTS system you would have to install a bunch of Debian packages...
-
-```
-aptitude install \
-fonts-lmodern \
-lmodern \
-markdown \
-pandoc \
-texlive-base \
-texlive-latex-extra \
-texlive-fonts-recommended \
-texlive-latex-recommended \
-texlive-xetex
-```
-
-...and `mkdocs` itself:
-
-```
-pip install mkdocs
-```
-
-Optionally, you may want to install markdown-include:
-
-```
-pip install markdown-include
-```
-
-This is a markdown extension that lets you build a hierarchy of Markdown
-documents using include statements (similar to LaTeX's `\input{}`.
+Aside from the filters the module contains a converter class tying them
+together into a coherent whole and the command line converter `mkdocs2pandoc`.
 
 # INSTALLATION
 
-Retrieve the source code...
+Make sure, you have [pip](https://pip.pypa.io/en/stable/) installed, then issue
+the following command:
 
 ```
-git clone https://github.com/jgrassler/mkdocs-pandoc
+pip install mkdocs_pandoc
 ```
 
-...and add the repository's bin/ directory to your current shell's search
-path:
+This will install the stable version. If you'd like to use the development
+version, use
 
 ```
-PATH=$PATH:$(readlink -e mkdocs-pandoc/bin)
+pip install https://github.com/jgrassler/mkdocs_pandoc
 ```
 
-Add the result of `echo "PATH=\$PATH:$(readlink -e mkdocs-pandoc/bin)"` to your
-shell's initialization file, e.g. `~/.bashrc` or `~/.zshrc` to add the
-repository's `bin/` directory to your shell's search path permanently.
+instead.
 
 # USAGE
 
@@ -66,14 +36,6 @@ When executed in the directory where your documentation's `mkdoc.yml` and the
 `docs/` directory containing the actual documentation resides, `mkdocs2pandoc`
 should print one long Markdown document suitable for `pandoc(1)` on standard
 output. This works under the following assumptions:
-
-1. The commands in this repository's `bin/` directory are in your shell's
-   `PATH` variable (if you followed the installation instructions above they
-   should be).
-
-2. `docs_dir` in `mkdocs.yml` is set to `docs` or unset (in this case it
-   defaults to `docs`). If your `docs_dir` is set to a different value specify
-   it as the first argument to mkdocs2pandoc.
 
 ## Usage example
 
@@ -90,21 +52,11 @@ The following things are known to be broken:
 
 * `mdtableconv.py`: Line wrapping in table cells will wrap links, which causes
   whitespace to be inserted in their target URLs, at least in PDF output. While
-  this is a bit of a Pandoc problem,
-
-* `mdtitles.rb`, `mdchapters.rb`, and (indirectly) `mdhead.rb`: these scripts
-  use information from the `pages` data structure in `mkdocs.yml` and go about
-  it in a rather naive way that breaks with 
-  [Multilevel Documentation](http://www.mkdocs.org/user-guide/writing-your-docs/#multilevel-documentation).
+  this is a bit of a Pandoc problem, it can and should be fixed in this module.
 
 * [Internal Hyperlinks](http://www.mkdocs.org/user-guide/writing-your-docs/#internal-hyperlinks) 
   between markdown documents will be reduced to their link titles, i.e. they
   will not be links in the resulting Pandoc document.
-
-# ROADMAP
-
-I plan on turning this mess of scripts into a proper Python module. Stay tuned
-and feel free to play with the existing code in the mean time.
 
 # COPYRIGHT
 
