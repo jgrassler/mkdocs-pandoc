@@ -1,11 +1,45 @@
 # DESCRIPTION
 
-This is a mixed bag of preprocessors for mkdocs style markdown that will
-convert it into one markdown file suitable for consumption by `pandoc(1)`.
-Their original purpose is providing a path for generating PDF and EPUB output
-in a sane manner, i.e. without having to resort to a HTML to PDF conversion
-step. It may be useful for other purposes as well, but this is the one I'm
-reasonably sure works.
+This is a mixed bag of preprocessors for [mkdocs](http://www.mkdocs.org) style
+markdown that will convert it into one markdown file suitable for consumption
+by [pandoc(1)](http://www.pandoc.org). Their original purpose is providing a
+path for generating PDF and EPUB output in a sane manner, i.e. without having
+to resort to a HTML to PDF conversion step. It may be useful for other purposes
+as well, but this is the one I'm reasonably sure it works for.
+
+# DEPENDENCIES
+
+In order to actually convert `mkdocs` documention to PDF you will need
+`mkdocs`, `pandoc` and the toolchain pandoc uses to generate PDF. On an Ubuntu
+14.04 LTS system you would have to install a bunch of Debian packages...
+
+```
+aptitude install \
+fonts-lmodern \
+lmodern \
+markdown \
+pandoc \
+texlive-base \
+texlive-latex-extra \
+texlive-fonts-recommended \
+texlive-latex-recommended \
+texlive-xetex
+```
+
+...and `mkdocs` itself:
+
+```
+pip install mkdocs
+```
+
+Optionally, you may want to install markdown-include:
+
+```
+pip install markdown-include
+```
+
+This is a markdown extension that lets you build a hierarchy of Markdown
+documents using include statements (similar to LaTeX's `\input{}`.
 
 # INSTALLATION
 
