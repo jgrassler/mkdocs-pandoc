@@ -9,8 +9,9 @@ here = path.abspath(path.dirname(__file__))
 long_description = (
     "mkdocs_pandoc is a library of preprocessors that convert mkdocs style markdown "
     "(multiple files, with the document structure defined in the mkdocs "
-    "configuration file mkdocs.yml) into a single markdown document digestible by"
-    "pandoc."
+    "configuration file mkdocs.yml) into a single markdown document digestible by "
+    "pandoc. It ships with the command line frontend tool mkdocs2pandoc as its primary " 
+    "user interface."
     )
 
 setup(
@@ -31,6 +32,7 @@ setup(
     # See https://pypi.python.org/pypi?%3Aaction=list_classifiers
     classifiers=[
         'Development Status :: 3 - Alpha',
+        'Intended Audience :: End Users/Desktop',
         'Intended Audience :: Developers',
         'Intended Audience :: Information Technology',
         'Intended Audience :: System Administrators',
