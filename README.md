@@ -18,7 +18,7 @@ Make sure, you have [pip](https://pip.pypa.io/en/stable/) installed, then issue
 the following command:
 
 ```
-pip install mkdocs_pandoc
+pip install mkdocs-pandoc
 ```
 
 This will install the stable version. If you'd like to use the development
