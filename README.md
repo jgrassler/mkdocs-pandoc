@@ -12,6 +12,24 @@ for
 Aside from the filters the module contains a converter class tying them
 together into a coherent whole and the command line converter `mkdocs2pandoc`.
 
+# PREREQUISITES
+
+For generating PDF through pandoc(1) you will need to install a few things
+pip(1) won't handle, namely pandoc and the somewhat exotic LaTeX packages its
+default LaTeX template uses. On a Ubuntu 14.04 system this amounts to the
+following packages:
+
+```
+fonts-lmodern
+lmodern
+pandoc
+texlive-base
+texlive-latex-extra
+texlive-fonts-recommended
+texlive-latex-recommended
+texlive-xetex
+```
+
 # INSTALLATION
 
 Make sure, you have [pip](https://pip.pypa.io/en/stable/) installed, then issue
