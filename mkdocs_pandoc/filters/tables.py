@@ -147,13 +147,13 @@ class TableFilter(tbl.TableProcessor):
         lines.append(self.ruler_line(widths, linetype='-'))
 
         # Only add header row if it contains more than just whitespace
-        if string.join(rows[0], '').strip() != '':
+        if ''.join(rows[0]).strip() != '':
                 lines.extend(self.wrap_row(widths, rows[0]))
                 lines.append(self.ruler_line(widths, linetype='='))
 
         for row in rows[1:]:
             # Skip empty rows
-            if string.join(row, '').strip() == '':
+            if ''.join(row).strip() == '':
                 continue
             lines.extend(self.wrap_row(widths, row))
             lines.append(self.ruler_line(widths, linetype='-'))
@@ -179,7 +179,7 @@ class TableFilter(tbl.TableProcessor):
         cells = []
         for w in widths:
             cells.append(linetype * (w+2))
-        return '+' + string.join(cells, '+') + '+'
+        return '+' + '+'.join(cells) + '+'
 
 
     def wrap_row(self, widths, row, width_default=None):
@@ -223,7 +223,7 @@ class TableFilter(tbl.TableProcessor):
             line = []
             for c in range(len(row)):
                 line.append(row[c][l])
-            line = '| ' + string.join(line, ' | ') + ' |'
+            line = '| ' + ' | '.join(line) + ' |'
             lines.append(line)
 
         return lines
