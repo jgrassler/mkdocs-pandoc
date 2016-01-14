@@ -17,7 +17,7 @@ long_description = (
 setup(
     name='mkdocs-pandoc',
 
-    version='0.2.1',
+    version='0.2.2',
 
     description='A translator from mkdocs style markdown to pandoc style '
                 + 'markdown',
