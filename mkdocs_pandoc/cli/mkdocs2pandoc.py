@@ -63,14 +63,13 @@ def main():
                 encoding=args.encoding,
                 )
     except FatalError as e:
-      print(e.message, file=sys.stderr)
-      return(e.status)
-
+        print(e.message, file=sys.stderr)
+        return(e.status)
     if args.outfile:
         try:
-          out = codecs.open(args.outfile, 'w', encoding=args.encoding)
+          with codecs.open(args.outfile, 'w', encoding=args.encoding) as out:
+              for line in pconv.convert():
+                  out.write(line + '\n')
+              out.close()
         except IOError as e:
           print("Couldn't open %s for writing: %s" % (args.outfile, e.strerror), file=sys.stderr)
-
-    for line in pconv.convert():
-        print(line, file=out)

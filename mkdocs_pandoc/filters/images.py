@@ -46,7 +46,7 @@ class ImageFilter(object):
                 # Make sure there is in fact an image file name
                 if match:
                     # Skip images we already processed
-                    if processed.has_key(match.group(0)):
+                    if match.group(0) in processed:
                         break
                     alt = match.group(1)
                     img_name = match.group(2)

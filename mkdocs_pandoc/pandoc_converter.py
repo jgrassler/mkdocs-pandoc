@@ -36,10 +36,10 @@ class PandocConverter:
 
         self.config = yaml.load(cfg)
 
-        if not self.config.has_key('docs_dir'):
+        if not 'docs_dir' in self.config:
             self.config['docs_dir'] = 'docs'
 
-        if not self.config.has_key('site_dir'):
+        if not 'site_dir' in  self.config:
             self.config['site_dir'] = 'site'
 
         # Set filters depending on markdown extensions from config
@@ -53,7 +53,7 @@ class PandocConverter:
             extname = ''
             # extension entries may be dicts (for passing extension parameters)
             if type(ext) is dict:
-                extname = ext.keys()[0]
+                extname = list(ext.keys())[0]
             if type(ext) is str:
                 extname = ext
 
@@ -69,17 +69,17 @@ class PandocConverter:
         flattened = []
 
         for page in pages:
-            if type(page.values()[0]) is str:
+            if type(list(page.values())[0]) is str:
                 flattened.append(
                         {
-                            'file': page.values()[0],
-                            'title': page.keys()[0],
+                            'file': list(page.values())[0],
+                            'title': list(page.keys())[0],
                             'level': level,
                          })
-            if type(page.values()[0]) is list:
+            if type(list(page.values())[0]) is list:
                 flattened.extend(
                         self.flatten_pages(
-                            page.values()[0],
+                            list(page.values())[0],
                             level + 1)
                         )
 
