@@ -1,0 +1,8 @@
+0.2.2:
+
+  * Merged Marcin Klick's Python3 compatibility fixes
+  * Documented packages required for generating PDF from Pandoc source
+
+0.2.1:
+
+  Initial public release.
