@@ -52,7 +52,13 @@ def main():
 
     args = opts.parse_args()
 
-    out = codecs.getwriter(args.encoding)(sys.stdout)
+    # Python 2 and Python 3 have mutually incompatible approaches to writing
+    # encoded data to sys.stdout, so we'll have to pick the appropriate one.
+
+    if sys.version_info.major == 2:
+      out = codecs.getwriter(args.encoding)(sys.stdout)
+    elif sys.version_info.major >= 3:
+      out = open(sys.stdout.fileno(), mode='w', encoding=args.encoding, buffering=1)
 
     try:
       pconv = mkdocs_pandoc.PandocConverter(
@@ -67,9 +73,10 @@ def main():
         return(e.status)
     if args.outfile:
         try:
-          with codecs.open(args.outfile, 'w', encoding=args.encoding) as out:
-              for line in pconv.convert():
-                  out.write(line + '\n')
-              out.close()
+          out = codecs.open(args.outfile, 'w', encoding=args.encoding)
         except IOError as e:
           print("Couldn't open %s for writing: %s" % (args.outfile, e.strerror), file=sys.stderr)
+
+    for line in pconv.convert():
+        out.write(line + '\n')
+    out.close()
