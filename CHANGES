@@ -1,3 +1,7 @@
+0.2.3:
+
+  * Fixed writing to standard output (broke in 0.2.2).
+
 0.2.2:
 
   * Merged Marcin Klick's Python3 compatibility fixes
