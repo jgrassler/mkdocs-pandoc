@@ -47,20 +47,21 @@ class PandocConverter:
         self.filter_include = False
         self.filter_toc = False
 
-        # ...then override defaults based on config:
+        # ...then override defaults based on config, if any:
 
-        for ext in self.config['markdown_extensions']:
-            extname = ''
-            # extension entries may be dicts (for passing extension parameters)
-            if type(ext) is dict:
-                extname = list(ext.keys())[0]
-            if type(ext) is str:
-                extname = ext
+        if 'markdown_extensions' in self.config:
+          for ext in self.config['markdown_extensions']:
+              extname = ''
+              # extension entries may be dicts (for passing extension parameters)
+              if type(ext) is dict:
+                  extname = list(ext.keys())[0]
+              if type(ext) is str:
+                  extname = ext
 
-            if extname == 'markdown_include.include':
-                self.filter_include = True
-            if extname == 'toc':
-                self.filter_toc = True
+              if extname == 'markdown_include.include':
+                  self.filter_include = True
+              if extname == 'toc':
+                  self.filter_toc = True
 
         cfg.close()
 
