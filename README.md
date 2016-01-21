@@ -43,10 +43,14 @@ This will install the stable version. If you'd like to use the development
 version, use
 
 ```
-pip install https://github.com/jgrassler/mkdocs_pandoc
+pip install git+https://github.com/jgrassler/mkdocs-pandoc
 ```
 
-instead.
+instead. Note that if you are behind a proxy, you might need to add the `--proxy` option like this
+
+```
+pip --proxy=http[s]://user@mydomain:port install ...
+```
 
 # USAGE
 
