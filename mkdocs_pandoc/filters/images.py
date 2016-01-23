@@ -71,6 +71,10 @@ class ImageFilter(object):
                                 os.path.abspath(
                                     os.path.dirname(self.filename)),
                                 img_name)
+                    
+                # handle Windows '\', although this adds a small amount of unnecessary work on Unix systems
+                img_name = img_name.replace(os.path.sep, '/')
+                             
                 line = re.sub(r'!\[(.*?)\]\((.*?)\)',
                         '![%s](%s)' % (alt, img_name), line)
 
