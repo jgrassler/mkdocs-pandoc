@@ -138,6 +138,9 @@ class PandocConverter:
             lines_tmp = f_chapterhead.run(lines_tmp)
             lines_tmp = f_image.run(lines_tmp)
             lines.extend(lines_tmp)
+            # Add an empty line between pages to prevent text from a previous
+            # file from butting up against headers in a subsequent file.
+            lines.append('')
 
         # Strip anchor tags
         if self.strip_anchors:
