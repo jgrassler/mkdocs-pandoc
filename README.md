@@ -29,8 +29,19 @@ texlive-fonts-recommended
 texlive-latex-recommended
 texlive-xetex
 ```
+On a Windows system you can get them through
+[Chocolatey](https://chocolatey.org/). Once you have Chocolatey up and running
+the following commands should leave you with everything you need to create PDF
+output from Pandoc:
+
+```
+choco install python
+choco install pandocpdf
+```
 
 # INSTALLATION
+
+_Note: The following instructions apply to both Unixoid systems and Windows._
 
 Make sure, you have [pip](https://pip.pypa.io/en/stable/) installed, then issue
 the following command:
