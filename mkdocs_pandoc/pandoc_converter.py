@@ -70,19 +70,27 @@ class PandocConverter:
         flattened = []
 
         for page in pages:
-            if type(list(page.values())[0]) is str:
+            if type(page) is list:
                 flattened.append(
-                        {
-                            'file': list(page.values())[0],
-                            'title': list(page.keys())[0],
-                            'level': level,
-                         })
-            if type(list(page.values())[0]) is list:
-                flattened.extend(
-                        self.flatten_pages(
-                            list(page.values())[0],
-                            level + 1)
-                        )
+                             {
+                                'file': page[0],
+                                'title': page[1],
+                                'level': level,
+                             })
+            if type(page) is dict:
+                if type(list(page.values())[0]) is str:
+                    flattened.append(
+                            {
+                                'file': list(page.values())[0],
+                                'title': list(page.keys())[0],
+                                'level': level,
+                             })
+                if type(list(page.values())[0]) is list:
+                    flattened.extend(
+                            self.flatten_pages(
+                                list(page.values())[0],
+                                level + 1)
+                            )
 
 
         return flattened
