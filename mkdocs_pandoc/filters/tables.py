@@ -97,6 +97,11 @@ class TableFilter(tbl.TableProcessor):
 
         for line in lines_orig:
             row = self._split_row(line, has_border)
+            # pad widest_cell to account for under length first row
+            for i in range(0, len(row) - len(widest_cell)):
+                widest_cell.append(0)
+                widest_word.append(0)
+                widths.append(0)
             for i in range(0, len(row)):
                 # Record cell width
                 if len(row[i]) > widest_cell[i]:
