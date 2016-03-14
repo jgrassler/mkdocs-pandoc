@@ -48,6 +48,9 @@ class ImageFilter(object):
                     # Skip images we already processed
                     if match.group(0) in processed:
                         break
+                    # Skip URLs
+                    if re.match('\w+://', match.group(2)):
+                        break
                     alt = match.group(1)
                     img_name = match.group(2)
                 else:
