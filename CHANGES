@@ -1,3 +1,8 @@
+0.2.6:
+
+ * Fixed issues/11 (added support for underwide header rows in tables)
+ * Fixed issues/9  (added support for list-style pages data structure)
+
 0.2.5:
 
   * Fixed issues/8 (missing empty lines between pages)
